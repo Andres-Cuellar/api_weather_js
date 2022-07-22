@@ -1,9 +1,18 @@
 let dataTemp;
 let city;
 
+//Agrega funcionalidad "Ver clima" al presionar Enter
+document.querySelector(".city").addEventListener("keypress", function (e) {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    searchCity();
+  }
+});
+
+//Accede al valor del input
 function searchCity() {
   city = document.querySelector(".city").value;
-  if (city == "") {
+  if (city == "" || city === Number) {
     alert("Debes escribir una ciudad");
   } else {
     fetchAPI(city);
@@ -11,10 +20,22 @@ function searchCity() {
 }
 
 const fetchAPI = async function (city) {
-  let urlAPI = `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&lang=es&APPID=b7d956b76a51e345c53b4e557d4b389b`;
-  let dataTemp = await fetch(urlAPI);
-  let res = await dataTemp.json();
-  return temperatureHTML(res);
+  try {
+    const result = await axios.get(
+      `https://api.openweathermap.org/data/2.5/weather?q=${city}`,
+      {
+        params: {
+          APPID: "b7d956b76a51e345c53b4e557d4b389b",
+          lang: "es",
+          units: "metric",
+        },
+      }
+    );
+
+    return temperatureHTML(result.data);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 async function temperatureHTML(res) {
@@ -32,7 +53,13 @@ async function temperatureHTML(res) {
   let weatherIcon = res.weather[0].icon;
 
   let date = new Date();
-  console.log(date.toLocaleDateString());
+  const dateOptions = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+  let todayDate = date.toLocaleDateString("es-ES", dateOptions);
 
   let country = res.sys.country;
 
@@ -40,32 +67,32 @@ async function temperatureHTML(res) {
   let windDeg = res.wind.deg;
 
   let html = `
-  <div class="card__weather__row-text rain">
-    <h2 class="card__weather__temp"> ${temp}°C</h2>
-    <div class="card__weather__temp__row"><p>${weather}</p> 
-    <img src="http://openweathermap.org/img/wn/${weatherIcon}@2x.png">
-    </div>    
-    <br />
-    <hr />
-    <br />
-    <h2>${cityResult}, ${country}</h2>
-    <p>Martes, 19 Junio 2022</p>
-  </div>
-  <div class="card__weather__row-map">
-    <div id="map" class="map"></div>
-    <div class="card__weather__temp__row">
-      <p>Temperatura mínima</p>
-      <p>Temperatura máxima</p>
+    <div class="card__weather__row-text rain">
+      <h2 class="card__weather__temp"> ${temp}°C</h2>
+      <div class="card__weather__temp__row"><p>${weather}</p> 
+      <img src="https://openweathermap.org/img/wn/${weatherIcon}@2x.png">
+      </div>    
+      <br />
+      <hr />
+      <br />
+      <h2>${cityResult}, ${country}</h2>
+      <p>${todayDate}</p>
     </div>
-    <div class="card__weather__temp__row">
-      <h3 class="card__weather__temp__min">${tempMin}°C</h3>
-      <h3 class="card__weather__temp__max">${tempMax}°C</h3>
-    </div>
-    <div class="card__weather__temp__row--background">
-      <h4>Humedad ${humidity}%</h4>
-      <h4>Viento ${windSpeed} km/h | Direccion ${windDeg}°</h4>
-    </div>
-  </div>`;
+    <div class="card__weather__row-map">
+      <div id="map" class="map"></div>
+      <div class="card__weather__temp__row">
+        <p>Temperatura mínima</p>
+        <p>Temperatura máxima</p>
+      </div>
+      <div class="card__weather__temp__row">
+        <h3 class="card__weather__temp__min">${tempMin}°C</h3>
+        <h3 class="card__weather__temp__max">${tempMax}°C</h3>
+      </div>
+      <div class="card__weather__temp__row--background">
+        <h4>Humedad ${humidity}%</h4>
+        <h4>Viento ${windSpeed} km/h | Direccion ${windDeg}°</h4>
+      </div>
+    </div>`;
 
   let card__weather = document.querySelector("#card__weather");
   card__weather.classList.add("card__weather");

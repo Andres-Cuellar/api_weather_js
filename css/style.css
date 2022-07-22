@@ -17,6 +17,10 @@ body {
   font-family: "Lato", sans-serif;
 }
 
+h1 {
+  color: #72451d;
+}
+
 h2,
 h3,
 h4,
@@ -25,7 +29,7 @@ p {
 }
 
 .container {
-  width: 50%;
+  width: 55%;
   height: 100%;
   display: flex;
   flex-wrap: wrap;
@@ -34,8 +38,37 @@ p {
   justify-content: center;
 }
 
+@media (max-width: 1200px) {
+  .container {
+    width: 65%;
+    padding: 200px 0;
+  }
+}
+
+@media (max-width: 992px) {
+  .container {
+    width: 70%;
+    padding: 150px 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    width: 80%;
+    padding: 100px 0;
+  }
+}
+
+@media (max-width: 576px) {
+  .container {
+    width: 90%;
+    padding: 50px 0;
+  }
+}
+
 .search {
   width: 100%;
+  margin-bottom: 25px;
 }
 
 .search input {
@@ -85,9 +118,23 @@ input:focus {
 
 .card__weather__row-text {
   color: #72451d;
-  width: 30%;
+  width: 40%;
   padding: 25px;
   border-radius: 10px 0 0 10px;
+}
+
+@media (max-width: 992px) {
+  .card__weather__row-text {
+    width: 100%;
+    border-radius: 10px 10px 0 0;
+  }
+}
+
+@media (max-width: 576px) {
+  .card__weather__row-text {
+    width: 100%;
+    border-radius: 10px 10px 0 0;
+  }
 }
 
 .card__weather__row-text hr {
@@ -101,10 +148,24 @@ input:focus {
 }
 
 .card__weather__row-map {
-  width: 70%;
+  width: 60%;
   background-color: white;
   padding: 15px;
   border-radius: 0 10px 10px 0;
+}
+
+@media (max-width: 992px) {
+  .card__weather__row-map {
+    width: 100%;
+    border-radius: 0 0 10px 10px;
+  }
+}
+
+@media (max-width: 576px) {
+  .card__weather__row-map {
+    width: 100%;
+    border-radius: 0 0 10px 10px;
+  }
 }
 
 .card__weather__temp {
@@ -112,7 +173,7 @@ input:focus {
   margin: 10px 0;
 }
 
-.card__weather__row-text  div img {
+.card__weather__row-text div img {
   width: 30px;
   height: 30px;
 }
